@@ -2,6 +2,9 @@ const express = require("express");
 const hbs = require("hbs");
 const fs = require("fs");
 
+//Creating port for heroku
+const PORT = process.env.PORT || 3000;
+
 //Creating a App to start with node
 var app = express();
 
@@ -17,16 +20,16 @@ app.use((request, response, next) => {
     var now = new Date().toString();
     var log = `${now}: ${request.method}, ${request.url}`;
     fs.appendFileSync("server.log", log + "\n", (err) => {
-        if(err){
+        if (err) {
             console.log("Unable to append to server log");
         }
-    }); 
+    });
     next();
 });
 //Express middleware for maintenance.hbs
 app.use((request, response, next) => {
     console.log("in 2");
-    //response.render('maintenance.hbs');
+    response.render('maintenance.hbs');
 });
 //Adding this line here so that Middleware will not run the static files. To use static content of the WebApp
 app.use(express.static(__dirname + "/public"));
@@ -62,6 +65,6 @@ app.get('/bad', (request, response) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Server is up on Port 3000");
+app.listen(PORT, () => {
+    console.log(`Server is up on Port ${PORT}` );
 });
