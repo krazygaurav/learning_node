@@ -16,7 +16,6 @@ app.set("view engine", hbs);
 //Registering Express Middleware
 app.use((request, response, next) => {
     //Application will start only when we call next
-    console.log("in 1");
     var now = new Date().toString();
     var log = `${now}: ${request.method}, ${request.url}`;
     fs.appendFileSync("server.log", log + "\n", (err) => {
@@ -28,8 +27,8 @@ app.use((request, response, next) => {
 });
 //Express middleware for maintenance.hbs
 app.use((request, response, next) => {
-    console.log("in 2");
-    response.render('maintenance.hbs');
+    //response.render('maintenance.hbs');
+    next();
 });
 //Adding this line here so that Middleware will not run the static files. To use static content of the WebApp
 app.use(express.static(__dirname + "/public"));
@@ -57,6 +56,12 @@ app.get('/about', (request, response) => {
         pageTitle: 'About Page',
     };
     response.render("about.hbs", json);
+});
+
+app.get("/projects", (request, response) => {
+    response.render("projects.hbs", {
+        pageTitle: 'Projects'
+    });
 });
 
 app.get('/bad', (request, response) => {
