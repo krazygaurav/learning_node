@@ -22,6 +22,16 @@ app.post('/todos', (request, response) => {
         console.log("Error occured while saving");
     });
 });
+app.get('/todos', (request, response) => {
+    Todo.find().then((todos) => {
+        response.send({
+            todos,
+            code: 'success'
+        });
+    }, (e) => {
+        response.status(400).send(e);
+    });
+});
 
 app.listen(3000, ()=> {
     console.log("Started on Port 3000");
