@@ -1,11 +1,12 @@
-var express = require("express");
-var bodyParser = require("body-parser");
+const _ = require("lodash");
+const express = require("express");
+const bodyParser = require("body-parser");
 
 //Local imports
-var {mongoose} = require("./db/mongoose");
-var {Todo} = require("./models/Todo");
-var {User} = require("./models/User");
-var {ObjectID} = require("mongodb");
+const {mongoose} = require("./db/mongoose");
+const {Todo} = require("./models/Todo");
+const {User} = require("./models/User");
+const {ObjectID} = require("mongodb");
 
 var app = express();
 
@@ -65,28 +66,27 @@ app.delete("/todos/:id", (request, response) => {
     });
 });
 
-// describe('DELETE /todos/"id', () => {
-//     it("should remove a todo", (done) => {
-//         var hexId = todos[1]._id.toHexString();
+app.patch('/todos/:id', (req, res) => {
+    var id = req.params.id;
+    var body = _.pick(req.body, ['text', 'completed']);
+    if(!ObjectID.isValid(id))
+        return res.status(404).send();
 
-//         request(app)
-//             .delete(`/todo/${hexId}`)
-//             .expect(200)
-//             .expect((res) => {
-//                 expect(res.body.todo._id).toBe(hexId);
-//             })
-//             .end((err, res) => {
-//                 if(err)
-//                     return done(err);
+    if(_.isBoolean(body.completed) && body.completed){
+        body.completedAt = new Date().getTime();
+    }else{
+        body.completed = false;
+        body.completedAt = null;
+    }
 
-//                 Todo.findById(hexId).then((todo) => {
-//                     expect(todo).toNotExist();
-//                     done();
-//                 }).catch((err) => done(err));
-//             });
-//     });
-// });
-
+    Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
+        if(!todo)
+            return res.status(404).send();
+        res.send({todo});
+    }).catch((err) => {
+        res.send(404).send();
+    });
+});
 
 app.listen(3000, ()=> {
     console.log("Started on Port 3000");

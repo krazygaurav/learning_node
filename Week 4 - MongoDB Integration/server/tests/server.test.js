@@ -2,10 +2,10 @@ const expect = require("expect");
 const request = require("supertest");
 const {ObjectID} = require("mongodb");
 
-const {app} = require("./../server");
-const {Todo} = require("./../models/Todo");
+var {app} = require("./../server");
+var {Todo} = require("./../models/Todo");
 
-const todos = [{
+var todos = [{
     _id : new ObjectID(),
     text: "First test Todo"
 }, {
@@ -97,5 +97,27 @@ describe("GET /todos/:id", () => {
             .get("/todos/123abc")
             .expect(404)
             .end(done);
+    });
+});
+
+describe('DELETE /todos/"id', () => {
+    it("should remove a todo", (done) => {
+        var hexId = todos[1]._id.toHexString();
+
+        request(app)
+            .delete(`/todo/${hexId}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.todo._id).toBe(hexId);
+            })
+            .end((err, res) => {
+                if(err)
+                    return done(err);
+
+                Todo.findById(hexId).then((todo) => {
+                    expect(todo).toNotExist();
+                    done();
+                }).catch((err) => done(err));
+            });
     });
 });
