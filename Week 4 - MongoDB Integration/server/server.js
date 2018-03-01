@@ -58,13 +58,35 @@ app.delete("/todos/:id", (request, response) => {
         return response.status(404).send();
     Todo.findByIdAndRemove(id).then((todo) => {
         if(todo == null)
-            response.status(400).send();
-        else
-            response.send(todo);
+            return response.status(400).send();
+        response.send({todo});
     }).catch((err) => {
         response.status(404).send();
     });
 });
+
+// describe('DELETE /todos/"id', () => {
+//     it("should remove a todo", (done) => {
+//         var hexId = todos[1]._id.toHexString();
+
+//         request(app)
+//             .delete(`/todo/${hexId}`)
+//             .expect(200)
+//             .expect((res) => {
+//                 expect(res.body.todo._id).toBe(hexId);
+//             })
+//             .end((err, res) => {
+//                 if(err)
+//                     return done(err);
+
+//                 Todo.findById(hexId).then((todo) => {
+//                     expect(todo).toNotExist();
+//                     done();
+//                 }).catch((err) => done(err));
+//             });
+//     });
+// });
+
 
 app.listen(3000, ()=> {
     console.log("Started on Port 3000");
