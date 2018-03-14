@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="form-validations.js"></script>
+
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="style.css"/>        
+    </head>
+
+<body>
+    <div class="container">
+        <h2>Registration</h2>
+        <form action="" name="registration" onsubmit="return validate_registration();">
+        
+            <label for="firstname">First Name</label>
+            <input type="text" name="firstname" id="firstname" placeholder="John" required="true" class="placeholder-fix"/>
+        
+            <label for="lastname">Last Name</label>
+            <input type="text" name="lastname" id="lastname" placeholder="Doe" required="true" class="placeholder-fix"/>
+        
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="john@doe.com" required="true" class="placeholder-fix"/>
+        
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" required="true"
+                class="placeholder-fix"/>
+        
+            <label for="dob">Date of Birth</label>
+            <input type="text" name="dob" id="dob" placeholder="Date" required="true" class="placeholder-fix"/>
+
+            <label for="website">Website</label>
+            <input type="text" name="website" id="website" placeholder="http://www.example.com" required="true" class="placeholder-fix"/>
+
+            <label for="age">Age</label>
+            <input type="number" name="age" id="age" placeholder="24" required="true" class="placeholder-fix"/>
+
+            <button type="submit">Register</button>
+        
+        </form>
+
+        <div id="display_values">
+            
+        </div>
+    </div>
+</body>
+</html>
