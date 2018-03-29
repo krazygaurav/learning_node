@@ -49,7 +49,7 @@ UserSchema.methods.generateAuthToken = function() {
     return user.save().then(() => {
         return token;
     });
-}
+};
 
 var User = mongoose.model('User', UserSchema);
 
